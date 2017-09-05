@@ -1,0 +1,204 @@
+# depslib dependency file v1.0
+1502073737 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/main.cpp
+	<iostream>
+	"MasterServer.h"
+	"SlaveServer.h"
+
+1493369249 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/include/masterServer.h
+	"asynOperationThread.h"
+
+1493296144 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/include/asynOperationThread.h
+	<string>
+	<iostream>
+	<netinet/in.h>
+	<netinet/tcp.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<unistd.h>
+	<stdlib.h>
+	<errno.h>
+	<vector>
+	<cstring>
+	<arpa/inet.h>
+	<pthread.h>
+	<event.h>
+	<event2/util.h>
+	<event2/event.h>
+	<event2/thread.h>
+
+1493365718 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/src/asynOperationThread.cpp
+	"asynOperationThread.h"
+
+1492833132 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/src/slaveServer.cpp
+	"slaveServer.h"
+
+1492847329 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/include/slaveServer.h
+	"asynOperationThread.h"
+
+1493365734 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/src/masterServer.cpp
+	"masterServer.h"
+
+1494471497 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/masterServer.h
+	"asynOperationThread.h"
+
+1494474393 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/asynOperationThread.h
+	"baseStructHeader.h"
+
+1494507789 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/asynOperationThread.cpp
+	"asynOperationThread.h"
+
+1494507051 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/masterServer.cpp
+	"masterServer.h"
+
+1492833132 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/slaveServer.cpp
+	"slaveServer.h"
+
+1492847329 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/slaveServer.h
+	"asynOperationThread.h"
+
+1496628617 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/baseStructHeader.h
+	<string>
+	<iostream>
+	<sstream>
+	<netinet/in.h>
+	<netinet/tcp.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<stdio.h>
+	<unistd.h>
+	<stdlib.h>
+	<errno.h>
+	<vector>
+	<cstring>
+	<arpa/inet.h>
+	<pthread.h>
+	<event.h>
+	<event2/util.h>
+	<event2/event.h>
+	<event2/thread.h>
+	"ConnectMsg.pb.h"
+
+1494387086 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/ConnectMsg.pb.h
+	<string>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/arena.h>
+	<google/protobuf/arenastring.h>
+	<google/protobuf/generated_message_table_driven.h>
+	<google/protobuf/generated_message_util.h>
+	<google/protobuf/metadata.h>
+	<google/protobuf/message.h>
+	<google/protobuf/repeated_field.h>
+	<google/protobuf/extension_set.h>
+	<google/protobuf/unknown_field_set.h>
+
+1494387086 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/ConnectMsg.pb.cc
+	"ConnectMsg.pb.h"
+	<algorithm>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/stubs/port.h>
+	<google/protobuf/stubs/once.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/wire_format_lite_inl.h>
+	<google/protobuf/descriptor.h>
+	<google/protobuf/generated_message_reflection.h>
+	<google/protobuf/reflection_ops.h>
+	<google/protobuf/wire_format.h>
+
+1502174871 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/AsynOperationThread.cpp
+	"AsynOperationThread.h"
+
+1502174868 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/AsynOperationThread.h
+	"basicHeader/EventImplSt.hpp"
+	"proto/ProtoMsgHeader.h"
+
+1503491023 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/basicHeader/MsgImplSt.hpp
+	"ConnImplSt.hpp"
+
+1502161636 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/basicHeader/ConnImplSt.hpp
+	"BaseFileHeader.h"
+
+1501752540 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/basicHeader/BaseFileHeader.h
+	<string>
+	<iostream>
+	<sstream>
+	<netinet/in.h>
+	<netinet/tcp.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<stdio.h>
+	<unistd.h>
+	<stdlib.h>
+	<errno.h>
+	<vector>
+	<map>
+	<queue>
+	<cstring>
+	<arpa/inet.h>
+	<pthread.h>
+	<event.h>
+	<event2/util.h>
+	<event2/event.h>
+	<event2/thread.h>
+	<google/protobuf/message.h>
+
+1495699755 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/proto/ProtoMsgHeader.h
+	"ConnectMsg.pb.h"
+
+1494387086 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/proto/ConnectMsg.pb.h
+	<string>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/arena.h>
+	<google/protobuf/arenastring.h>
+	<google/protobuf/generated_message_table_driven.h>
+	<google/protobuf/generated_message_util.h>
+	<google/protobuf/metadata.h>
+	<google/protobuf/message.h>
+	<google/protobuf/repeated_field.h>
+	<google/protobuf/extension_set.h>
+	<google/protobuf/unknown_field_set.h>
+
+1503492054 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/MasterServer.h
+	"basicHeader/ServerEventImplSt.hpp"
+	"AsynOperationThread.h"
+
+1503561299 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/MasterServer.cpp
+	"MasterServer.h"
+	"MessageMoudle.hpp"
+	"LogicMoudle.hpp"
+
+1494387086 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/proto/ConnectMsg.pb.cc
+	"ConnectMsg.pb.h"
+	<algorithm>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/stubs/port.h>
+	<google/protobuf/stubs/once.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/wire_format_lite_inl.h>
+	<google/protobuf/descriptor.h>
+	<google/protobuf/generated_message_reflection.h>
+	<google/protobuf/reflection_ops.h>
+	<google/protobuf/wire_format.h>
+
+1503562779 source:/home/ljh/Desktop/myWork/tcpMoudle/logicServer/SlaveServer.cpp
+	"SlaveServer.h"
+	"MessageMoudle.hpp"
+	"LogicMoudle.hpp"
+
+1503492060 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/SlaveServer.h
+	"AsynOperationThread.h"
+	"basicHeader/ServerEventImplSt.hpp"
+
+1503575840 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/basicHeader/ServerEventImplSt.hpp
+	"MsgImplSt.hpp"
+
+1503480483 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/basicHeader/EventImplSt.hpp
+	"MsgImplSt.hpp"
+
+1503651453 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/MessageMoudle.hpp
+	"basicHeader/ServerEventImplSt.hpp"
+
+1503560725 /home/ljh/Desktop/myWork/tcpMoudle/logicServer/LogicMoudle.hpp
+	"basicHeader/ServerEventImplSt.hpp"
+

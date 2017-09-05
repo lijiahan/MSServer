@@ -1,0 +1,181 @@
+# depslib dependency file v1.0
+1493366856 source:/home/ljh/Desktop/myWork/tcpMoudle/gateServer/src/masterServer.cpp
+	"masterServer.h"
+
+1493294916 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/include/masterServer.h
+	"SlaveServer.h"
+
+1495699117 source:/home/ljh/Desktop/myWork/tcpMoudle/gateServer/main.cpp
+	<iostream>
+	"MasterServer.h"
+
+1493362073 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/include/SlaveServer.h
+	"../baseStructHeader.h"
+
+1495532181 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/baseStructHeader.h
+	<string>
+	<iostream>
+	<sstream>
+	<netinet/in.h>
+	<netinet/tcp.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<stdio.h>
+	<unistd.h>
+	<stdlib.h>
+	<errno.h>
+	<vector>
+	<map>
+	<cstring>
+	<arpa/inet.h>
+	<pthread.h>
+	<event.h>
+	<event2/util.h>
+	<event2/event.h>
+	<event2/thread.h>
+	"ConnectMsg.pb.h"
+
+1493368982 source:/home/ljh/Desktop/myWork/tcpMoudle/gateServer/src/SlaveServer.cpp
+	"SlaveServer.h"
+
+1493985156 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/masterServer.h
+	"SlaveServer.h"
+
+1503565060 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/SlaveServer.h
+	"basicHeader/MsgImplSt.hpp"
+	"proto/ProtoMsgHeader.h"
+
+1494832582 source:/home/ljh/Desktop/myWork/tcpMoudle/gateServer/masterServer.cpp
+	"masterServer.h"
+
+1503568582 source:/home/ljh/Desktop/myWork/tcpMoudle/gateServer/SlaveServer.cpp
+	"SlaveServer.h"
+	"basicHeader/H5MessageResolver.hpp"
+	"basicHeader/MessageDisposer.hpp"
+
+1494335420 /home/ljh/Desktop/myWork/tcpMoudle/msg/proto/ConnectMsg.pb.h
+	<string>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/arena.h>
+	<google/protobuf/arenastring.h>
+	<google/protobuf/generated_message_table_driven.h>
+	<google/protobuf/generated_message_util.h>
+	<google/protobuf/metadata.h>
+	<google/protobuf/message.h>
+	<google/protobuf/repeated_field.h>
+	<google/protobuf/extension_set.h>
+	<google/protobuf/unknown_field_set.h>
+
+1494387086 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/ConnectMsg.pb.h
+	<string>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/arena.h>
+	<google/protobuf/arenastring.h>
+	<google/protobuf/generated_message_table_driven.h>
+	<google/protobuf/generated_message_util.h>
+	<google/protobuf/metadata.h>
+	<google/protobuf/message.h>
+	<google/protobuf/repeated_field.h>
+	<google/protobuf/extension_set.h>
+	<google/protobuf/unknown_field_set.h>
+
+1494387086 source:/home/ljh/Desktop/myWork/tcpMoudle/gateServer/ConnectMsg.pb.cc
+	"ConnectMsg.pb.h"
+	<algorithm>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/stubs/port.h>
+	<google/protobuf/stubs/once.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/wire_format_lite_inl.h>
+	<google/protobuf/descriptor.h>
+	<google/protobuf/generated_message_reflection.h>
+	<google/protobuf/reflection_ops.h>
+	<google/protobuf/wire_format.h>
+
+1496825409 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/MasterServer.h
+	"SlaveServer.h"
+
+1503629026 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/basicHeader/MsgImplSt.hpp
+	"ConnImplSt.hpp"
+
+1502418621 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/basicHeader/ConnImplSt.hpp
+	"BaseFileHeader.h"
+
+1497508910 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/basicHeader/BaseFileHeader.h
+	<string>
+	<iostream>
+	<sstream>
+	<netinet/in.h>
+	<netinet/tcp.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<stdio.h>
+	<unistd.h>
+	<stdlib.h>
+	<errno.h>
+	<vector>
+	<map>
+	<cstring>
+	<arpa/inet.h>
+	<pthread.h>
+	<event.h>
+	<event2/util.h>
+	<event2/event.h>
+	<event2/thread.h>
+	<google/protobuf/message.h>
+
+1495699755 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/proto/ProtoMsgHeader.h
+	"ConnectMsg.pb.h"
+
+1494387086 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/proto/ConnectMsg.pb.h
+	<string>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/arena.h>
+	<google/protobuf/arenastring.h>
+	<google/protobuf/generated_message_table_driven.h>
+	<google/protobuf/generated_message_util.h>
+	<google/protobuf/metadata.h>
+	<google/protobuf/message.h>
+	<google/protobuf/repeated_field.h>
+	<google/protobuf/extension_set.h>
+	<google/protobuf/unknown_field_set.h>
+
+1496825429 source:/home/ljh/Desktop/myWork/tcpMoudle/gateServer/MasterServer.cpp
+	"MasterServer.h"
+
+1494387086 source:/home/ljh/Desktop/myWork/tcpMoudle/gateServer/proto/ConnectMsg.pb.cc
+	"ConnectMsg.pb.h"
+	<algorithm>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/stubs/port.h>
+	<google/protobuf/stubs/once.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/wire_format_lite_inl.h>
+	<google/protobuf/descriptor.h>
+	<google/protobuf/generated_message_reflection.h>
+	<google/protobuf/reflection_ops.h>
+	<google/protobuf/wire_format.h>
+
+1460480774 source:/home/ljh/Desktop/myWork/tcpMoudle/gateServer/basicHeader/base64.cpp
+	"base64.h"
+	<iostream>
+
+1460480774 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/basicHeader/base64.h
+	<string>
+
+1460480774 source:/home/ljh/Desktop/myWork/tcpMoudle/gateServer/basicHeader/sha1.cpp
+	"sha1.h"
+
+1460480774 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/basicHeader/sha1.h
+
+1497683425 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/basicHeader/H5MessageResolver.hpp
+	"ConnImplSt.hpp"
+	"sha1.h"
+	"base64.h"
+
+1503629120 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/basicHeader/MessageDisposer.hpp
+	"ConnImplSt.hpp"
+
