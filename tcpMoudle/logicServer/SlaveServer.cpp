@@ -204,6 +204,29 @@ void SlaveServer::addServerInd(int ind)
 {
 
 }
+
+//
+void SlaveServer::logicMoudle(ConnCtx * conn, InterComMsg * msg)
+{
+    CLIENTIDTYPE uid = msg->uId;
+    ClientCtx * clientCtx = clientCtxMgr->getCtx(uid);
+
+    //
+    if( clientCtx != NULL )
+    {
+        HandlerCtx * handlerCtx = handlerCtxMgr->getCtx(msg->handlerInd, conn, msg, clientCtx, clientCtxMgr);
+        MOUDLEID mid = msg->logicMoudleId;
+        std::map<int, LogicMoudleInterface * >::iterator it = moudleInterfaceMap.find(mid);
+        if( it != moudleInterfaceMap.end() )
+        {
+            printf("logicMoudle uid %d mid %d \n", uid, mid);
+            LogicMoudleInterface * mif = it->second;
+            //
+            mif->
+        }
+    }
+}
+
 //
 void SlaveServer::sendMsgToServer(SendMsgInfo * msgInfo)
 {
@@ -211,7 +234,8 @@ void SlaveServer::sendMsgToServer(SendMsgInfo * msgInfo)
     {
         case SendMsgToConn:
         {
-            asynThread->asynWriteMsg(msgInfo->sendMsg, msgInfo->writeInd);
+            ServerDataCtx * extraData = (ServerDataCtx *) (msgInfo->conn->eDataCtx);
+            asynThread->asynWriteMsg(msgInfo->sendMsg, extraData->writeInd);
             break;
         }
 

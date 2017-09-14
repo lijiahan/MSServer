@@ -53,8 +53,12 @@ enum MsgMoudleType
 enum ClientLogicHandleType
 {
     ReqCliConnectLS = 41001,
+    ReqCliDisConnectLS,
+    ReqConnectShareBlock,
 
     ResCliConnectLS = 42001,
+    ResCliDisConnectLS,
+    ResConnectShareBlock,
 };
 
 enum ClientGateWayHandlerType

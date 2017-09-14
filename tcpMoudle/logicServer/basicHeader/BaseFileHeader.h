@@ -28,6 +28,7 @@
 #define BufSize 8192
 #define ConnSize 20
 #define SendDataSize 1024
+#define ModuleMaxNum 10
 
 extern int errno;
 

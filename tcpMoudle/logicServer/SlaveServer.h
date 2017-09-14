@@ -59,6 +59,20 @@ class GWConnCtxMgr
             return ctx;
         }
 
+        GateWayCtx * getGateWayCtx( int sid )
+        {
+            std::map<int, GateWayCtx *>::iterator itmp;
+            for( itmp = gateWayMap.begin(); itmp != gateWayMap.end(); itmp++ )
+            {
+                if( itmp->second->serverId == sid )
+                {
+                    return itmp->second;
+                }
+            }
+
+            return NULL;
+        }
+
         GateWayCtx * getGateWayCtx( ConnCtx * conn )
         {
             GateWayCtx * ctx = NULL;
@@ -126,9 +140,9 @@ class SlaveServer : public ServerExtraInterface
         virtual void initServerByMsg(InterComMsg *msg, ConnCtx * conn, void * resData);
         //
         virtual void initLogicMoudle();
-        //
         virtual int diapatchServerInd(int blockId);
         virtual void addServerInd(int ind);
+        virtual void logicMoudle(ConnCtx * conn, InterComMsg * msg);
         //
         virtual void sendMsgToServer(SendMsgInfo * sendMsg);
 

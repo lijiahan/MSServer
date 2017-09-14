@@ -47,8 +47,10 @@ enum SlaveServerHandleType
 enum ClientLogicHandleType
 {
     ReqCliConnectLS = 41001,
+    ReqCliDisConnectLS,
 
     ResCliConnectLS = 42001,
+    ResCliDisConnectLS,
 };
 
 enum ClientGateWayHandlerType

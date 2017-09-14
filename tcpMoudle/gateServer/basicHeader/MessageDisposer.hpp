@@ -453,7 +453,7 @@ class CliServerMsgDisposer : public MessageDisposer
                                                 cgMsg->handlerState, conn->index, cgMsg->logicBlockId,
                                                 clientCtx->clientId, wlen, cgMsg->data, cgMsg->msgLen);
 
-                        printf("ClientLogicMsgType send num %d!!\n", bufCtx->bufLen);
+                        printf("ClientLogicMsgType send num %d blockid %d uID %d!!\n", bufCtx->bufLen,blockId,clientCtx->clientId);
                         //
                         ExtraInterface * tm = (ExtraInterface *) ((conn->serverCtx));
                         tm->resetTimer(conn->timerHandler);
@@ -541,6 +541,8 @@ class CliServerMsgDisposer : public MessageDisposer
                 printf("can not write, conn is disable!!\n");
                 return;
             }
+
+            printf("client %d connect master server !!\n", uId);
 
             InterComMsg * reM = MsgMgr::buildInterComMsg(bufCtx, MainInitMouldeType,
                                                          ReqCliConnectLS, conn->index,

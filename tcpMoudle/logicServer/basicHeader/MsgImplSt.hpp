@@ -41,15 +41,21 @@ enum GateWayHandleType
 enum ClientLogicHandleType
 {
     ReqCliConnectLS = 41001,
+    ReqCliDisConnectLS,
+    ReqConnectShareBlock,
 
     ResCliConnectLS = 42001,
+    ResCliDisConnectLS,
+    ResConnectShareBlock,
 };
 
 enum SlaveServerHandleType
 {
     ReqSSConnectMS = 31001,
+    ReqCliLogicMS,
 
     ResSSConnectMS = 32001,
+    ResCliLogicMS,
 };
 
 
@@ -91,7 +97,7 @@ struct SlaveSvrConnectMST
 struct SendMsgInfo
 {
     int msgType;
-    int writeInd;
+    ConnCtx * conn;
     InterComMsg * sendMsg;
     char msgData[SendDataSize];
 };
@@ -100,6 +106,14 @@ struct CliConnectMST
 {
     int connIndex;
     int logicSvrIndex;
+    CLIENTIDTYPE uId;
+    int logicBlockId;
+};
+
+struct CliLogicMST
+{
+    int handleType;
+    int serverId;
     CLIENTIDTYPE uId;
     int logicBlockId;
 };
@@ -142,10 +156,10 @@ class MsgMgr
             bufCtx->bufLen += len + InterComMsgLen;
         }
 
-        static void makeSendDataInfo( SendMsgInfo * info, int msgType, int writeInd, InterComMsg * head, char * data, int len )
+        static void makeSendDataInfo( SendMsgInfo * info, int msgType, ConnCtx * conn, InterComMsg * head, char * data, int len )
         {
             info->msgType = msgType;
-            info->writeInd = writeInd;
+            info->conn = conn;
             InterComMsg * msg = (InterComMsg *)(info->msgData);
             msg->msgMoudleType = head->msgMoudleType;
             msg->logicMoudleId = head->logicMoudleId;
@@ -203,11 +217,29 @@ class MsgMgr
             mst->uId = uId;
             mst->logicBlockId = lInd;
         }
+
+        static CliLogicMST * buildCliLogicMST(char * mbuf, int cInd, CLIENTIDTYPE uId, int sInd, int lInd)
+        {
+            CliLogicMST * mst = (CliLogicMST *) mbuf;
+            mst->handleType = cInd;
+            mst->uId = uId;
+            mst->serverId = sInd;
+            mst->logicBlockId = lInd;
+        }
+
     public:
         static const int InterComMsgLen = sizeof(InterComMsg);
         static const int GateWayConnectMSTLen = sizeof(GateWayConnectMST);
         static const int SlaveSvrConnectMSTLen = sizeof(SlaveSvrConnectMST);
         static const int CliConnectMSTLen = sizeof(CliConnectMST);
+        static const int CliLogicMSTLen = sizeof(CliLogicMST);
+};
+
+//
+class MsgServerInterface
+{
+    virtual void initServerByMsg(InterComMsg *msg, ConnCtx * conn, void * resData) = 0;
+    virtual void sendMsgToServer(SendMsgInfo * sendMsg) = 0;
 };
 
 //
@@ -220,7 +252,7 @@ class MsgMoudleInterface
         virtual void moudleHandler( ConnCtx * conn, InterComMsg * inMsg ) = 0;
 };
 
-class MsgMoudleMgr
+class MsgMoudleMgr : public MsgServerInterface
 {
     public:
         MsgMoudleMgr()

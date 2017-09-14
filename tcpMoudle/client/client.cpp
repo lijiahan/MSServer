@@ -101,6 +101,8 @@ void client::initialClient( int ind,std::string gateWayIp, int gateWayPort )
     msg->msgLen = len;
     wbufCtx->bufLen = len + ClientToGateMsgLen;
     setWriteEvent();
+    //
+    gettimeofday(&start, NULL);
 
     event_base_dispatch(eventBase);
 }
@@ -384,19 +386,9 @@ void client::onReadEvent(connCtx * ctx)
                 long st = ((long)start.tv_sec)*1000+(long)start.tv_usec/1000;
                 long et = ((long)stop.tv_sec)*1000+(long)stop.tv_usec/1000;
                 printf("Start time: %ld ms end time: %ld ms cost time: %ld ms\n", st,et,et-st);
-                break;
-            }
-        case ResCliConnectGw:
-            {
-                ConnectMsg::ClientConnect conMsg;
-                conMsg.ParseFromArray(pm->data,pm->msgLen);
-                printf("client %d *** ResCliConnectGw id=%d\n",clientIndex, conMsg.uid());
-                //
-                ConnectMsg::ClientConnect cl;
-                uint32_t id = 1000 + clientIndex;
-                cl.set_uid(id);
-                cl.set_type(1);
 
+                //
+                //
                 int mlen = cl.ByteSize();
                 int wlen = mlen + ClientToGateMsgLen;
                 BufCtx * bufCtx = NULL;
@@ -425,7 +417,7 @@ void client::onReadEvent(connCtx * ctx)
 
                 ClientToGateMsg * msg = (ClientToGateMsg *) (bufCtx->buf + bufCtx->bufLen);
                 msg->msgType = ClientLogicMsgType;
-                msg->handlerState = ReqCliConnectLS;
+                msg->handlerState = ReqConnectShareBlock;
                 msg->logicBlockId = ShareBlockMoulde;
 
                 msg->msgLen = mlen;
@@ -433,7 +425,15 @@ void client::onReadEvent(connCtx * ctx)
                 bufCtx->bufLen = wlen;
                 setWriteEvent();
                 //
-                gettimeofday(&start, NULL);
+                //
+                break;
+            }
+        case ResCliConnectGw:
+            {
+                ConnectMsg::ClientConnect conMsg;
+                conMsg.ParseFromArray(pm->data,pm->msgLen);
+                printf("client %d *** ResCliConnectGw id=%d\n",clientIndex, conMsg.uid());
+
             }
         default:
             break;

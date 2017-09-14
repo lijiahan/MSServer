@@ -30,9 +30,39 @@ struct ServerDataCtx
 //
 class DataMoudleCtx
 {
-    int type;
-    int state;
-    void * data;
+    public:
+        DataMoudleCtx()
+        {
+            type = 0;
+            state = 0;
+            dispIndex = 0;
+            data = NULL;
+        }
+
+    public:
+        int type;
+        int state;
+        int dispIndex;
+        void * data;
+};
+
+//
+class LogicMoudleCtx
+{
+    public:
+        DataMoudleCtx()
+        {
+            type = 0;
+            state = 0;
+            dispIndex = 0;
+            data = NULL;
+        }
+
+    public:
+        int type;
+        int state;
+        int dispIndex;
+        void * data;
 };
 
 //
@@ -62,6 +92,17 @@ class ClientCtx
                 }
             }
             dataMoudleMap.clear();
+
+            //
+            std::map<MOUDLEID, LogicMoudleCtx* >::iterator it;
+            for( it = logicMoudleMap.begin(); it != logicMoudleMap.end(); it++ )
+            {
+                if(it->second != NULL)
+                {
+                    delete it->second;
+                }
+            }
+            logicMoudleMap.clear();
         }
 
         DataMoudleCtx * getDataCtx( MOUDLEID mid )
@@ -81,11 +122,28 @@ class ClientCtx
             return dataCtx;
         }
 
+        LogicMoudleCtx * getLogicCtx( MOUDLEID mid )
+        {
+            LogicMoudleCtx * logicCtx = NULL;
+            std::map<MOUDLEID, LogicMoudleCtx* >::iterator it = logicMoudleMap.find(mid);
+            if( it != logicMoudleMap.end() )
+            {
+                logicCtx = it->second;
+            }
+            else
+            {
+                logicCtx = new DataMoudleCtx();
+                logicMoudleMap[mid] = logicCtx;
+            }
+
+            return logicCtx;
+        }
+
     public:
         CLIENTIDTYPE uid;
         ClientConnCtx clConnCtx;
         std::map<MOUDLEID, DataMoudleCtx *> dataMoudleMap;
-
+        std::map<MOUDLEID, LogicMoudleCtx *> logicMoudleMap;
 };
 
 class ClientCtxMgr
@@ -174,8 +232,6 @@ class ClientCtxMgr
 };
 
 //
-//
-
 //
 struct HandlerCtx
 {
@@ -283,16 +339,32 @@ class HandlerCtxMgr
         static const int HandlerCtxSize = sizeof(HandlerCtx);
 };
 
+struct MoudleDataCheck
+{
+    int logicId;
+    int dataNum;
+    int dataIndex[ModuleMaxNum];
+    int dispIndex;
+};
 
 class LogicMoudleInterface
 {
     public:
         LogicMoudleInterface(){}
         virtual ~LogicMoudleInterface(){}
-        virtual void logicMoudleHandler(HandlerCtx * handlerCtx) = 0;
+
+        virtual int getDataCheckgetDataCheck(ClientCtx * clientCtx, MoudleDataCheck * dataCheck)
+        {
+            return 0;
+        }
+
+        virtual void logicHander(HandlerCtx * handlerCtx)
+        {
+
+        }
 };
 
-class LogicMoudleMgr
+class LogicMoudleMgr : public MsgServerInterface
 {
     public:
         LogicMoudleMgr()
@@ -309,6 +381,9 @@ class LogicMoudleMgr
         }
 
         virtual void initLogicMoudle() = 0;
+        virtual int diapatchServerInd(int blockId) = 0;
+        virtual void addServerInd(int ind) = 0;
+        virtual void logicMoudle(ConnCtx * conn, InterComMsg * msg) = 0;
          //
         void registerLogicMoudle(int type, LogicMoudleInterface * moudle)
         {
@@ -326,24 +401,6 @@ class LogicMoudleMgr
 
             moudleInterfaceMap.erase(type);
             return inf;
-        }
-
-        virtual void logicMoudle(ConnCtx * conn, InterComMsg * msg)
-        {
-            CLIENTIDTYPE uid = msg->uId;
-            ClientCtx * clientCtx = clientCtxMgr->getCtx(uid);
-            //
-            if( clientCtx != NULL )
-            {
-                HandlerCtx * handlerCtx = handlerCtxMgr->getCtx(msg->handlerInd, conn, msg, clientCtx, clientCtxMgr);
-                MOUDLEID mid = msg->logicMoudleId;
-                std::map<int, LogicMoudleInterface * >::iterator it = moudleInterfaceMap.find(mid);
-                if( it != moudleInterfaceMap.end() )
-                {
-                    LogicMoudleInterface * mif = it->second;
-                    mif->logicMoudleHandler(handlerCtx);
-                }
-            }
         }
 
         ClientCtx * getNewClientCtx(CLIENTIDTYPE uid, ConnCtx * conn, int connIndex)
@@ -379,17 +436,6 @@ class ServerExtraInterface : public TimerEventMoulde, public MsgMoudleMgr, publi
             event_base_free( eventBase );
             delete serverConnMgr;
         }
-
-        //
-        virtual void initMsgMoudle() = 0;
-        //
-        virtual void initLogicMoudle() = 0;
-        //
-        virtual void initServerByMsg(InterComMsg *msg, ConnCtx * conn, void * resData) = 0;
-        virtual int diapatchServerInd(int blockId) = 0;
-        virtual void addServerInd(int ind) = 0;
-        //
-        virtual void sendMsgToServer(SendMsgInfo * sendMsg) = 0;
 
         //
         virtual void listenEventHandler(ConnCtx * conn) = 0;

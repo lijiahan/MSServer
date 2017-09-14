@@ -68,8 +68,7 @@ class MasterInitMsgMoudle : public MsgMoudleInterface
                     rm->msgLen = len;
 
                     SendMsgInfo msgInfo;
-
-                    MsgMgr::makeSendDataInfo(&msgInfo, SendMsgToConn, extraData->writeInd, rm, rm->data, rm->msgLen);
+                    MsgMgr::makeSendDataInfo(&msgInfo, SendMsgToConn, conn, rm, rm->data, rm->msgLen);
                     ein->sendMsgToServer(&msgInfo);
                     printf("ReqCliConnectLS  client uid = %d  len = %d\n", client->uid, msgInfo.sendMsg->msgLen);
 
@@ -99,8 +98,7 @@ class MasterInitMsgMoudle : public MsgMoudleInterface
         mst->handleType = ResGWConnectMS;
 
         SendMsgInfo msgInfo;
-        ServerDataCtx * extraData = (ServerDataCtx *) (conn->eDataCtx);
-        MsgMgr::makeSendDataInfo(&msgInfo, SendMsgToConn, extraData->writeInd, iMsg, iMsg->data, iMsg->msgLen);
+        MsgMgr::makeSendDataInfo(&msgInfo, SendMsgToConn, conn, iMsg, iMsg->data, iMsg->msgLen);
 
         ServerExtraInterface * ein = (ServerExtraInterface *) (conn->serverCtx);
         ein->sendMsgToServer(&msgInfo);
@@ -114,8 +112,7 @@ class MasterInitMsgMoudle : public MsgMoudleInterface
         iMsg->handleType = ResSSConnectMS;
 
         SendMsgInfo msgInfo;
-        ServerDataCtx * extraData = (ServerDataCtx *) (conn->eDataCtx);
-        MsgMgr::makeSendDataInfo(&msgInfo, SendMsgToConn, extraData->writeInd, iMsg, iMsg->data, iMsg->msgLen);
+        MsgMgr::makeSendDataInfo(&msgInfo, SendMsgToConn, conn, iMsg, iMsg->data, iMsg->msgLen);
 
         ServerExtraInterface * ein = (ServerExtraInterface *) (conn->serverCtx);
         ein->sendMsgToServer(&msgInfo);
@@ -193,8 +190,7 @@ class SlaveInitMsgMoudle : public MsgMoudleInterface
             mst->handleType = ResGWConnectSS;
 
             SendMsgInfo msgInfo;
-            ServerDataCtx * extraData = (ServerDataCtx *) (conn->eDataCtx);
-            MsgMgr::makeSendDataInfo(&msgInfo, SendMsgToConn, extraData->writeInd, iMsg, iMsg->data, iMsg->msgLen);
+            MsgMgr::makeSendDataInfo(&msgInfo, SendMsgToConn, msgInfo->conn, iMsg, iMsg->data, iMsg->msgLen);
 
             ServerExtraInterface * ein = (ServerExtraInterface *) (conn->serverCtx);
             ein->sendMsgToServer(&msgInfo);
