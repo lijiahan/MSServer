@@ -104,24 +104,18 @@ class LgServerMsgDisposer : public MessageDisposer
             {
                 case ResGWConnectMS:
                     {
-                        GateWayConnectMST * msgSt = (GateWayConnectMST *) (inMsg->data);
-                        printf("ResGWConnectMS ctxIndex: %d\n", msgSt->logicSvrIndex);
                         ExtraInterface * ein = (ExtraInterface *)(conn->serverCtx);
-                        ein->initConnByMsg(ResGWConnectMS, (void *) msgSt, conn, NULL);
+                        ein->initConnByMsg(ResGWConnectMS, (void *) inMsg, conn, NULL);
                         break;
                     }
                 case ReqGWConnectSS:
                     {
-                        SlaveSvrConnectMST * msgSt = (SlaveSvrConnectMST *) (inMsg->data);
-                        printf("ReqGWConnectSS handleType: %d\n", msgSt->handleType);
                         ExtraInterface * ein = (ExtraInterface *)(conn->serverCtx);
                         ein->initConnByMsg(ReqGWConnectSS, (void *) inMsg, conn, NULL);
                         break;
                     }
                 case ResGWConnectSS:
                     {
-                        SlaveSvrConnectMST * msgSt = (SlaveSvrConnectMST *) (inMsg->data);
-                        printf("ResGWConnectSS handleType: %d\n", msgSt->handleType);
                         ExtraInterface * ein = (ExtraInterface *)(conn->serverCtx);
                         ein->initConnByMsg(ReqGWConnectSS, (void *) inMsg, conn, NULL);
                         break;
@@ -542,7 +536,7 @@ class CliServerMsgDisposer : public MessageDisposer
                 return;
             }
 
-            printf("client %d connect master server !!\n", uId);
+            printf("client %d connect master server, fd = %d !!\n", uId, svrConn->fd);
 
             InterComMsg * reM = MsgMgr::buildInterComMsg(bufCtx, MainInitMouldeType,
                                                          ReqCliConnectLS, conn->index,

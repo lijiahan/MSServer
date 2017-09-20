@@ -20,12 +20,11 @@ class MasterShareBlockLogic : public LogicMoudleInterface
         virtual int getDataCheck(ClientCtx * clientCtx, MoudleDataCheck * dataCheck)
         {
             int mid = clientCtx->getDataCtx(1)->dispIndex;
+            if( mid == 0 )
+            {
+                return dataCheck->slaveCtx->slaveSvrIndex;
+            }
             return mid;
-        }
-
-        virtual void logicHander(HandlerCtx * handlerCtx)
-        {
-
         }
 };
 
@@ -47,11 +46,6 @@ class MasterIndenpentBlockLogic : public LogicMoudleInterface
             printf("MasterIndenpentBlockLogic\n");
             return 0;
         }
-
-        virtual void logicHander(HandlerCtx * handlerCtx)
-        {
-
-        }
 };
 
 class SlaveShareBlockLogic : public LogicMoudleInterface
@@ -70,7 +64,18 @@ class SlaveShareBlockLogic : public LogicMoudleInterface
         //
         virtual void logicHander(HandlerCtx * handlerCtx)
         {
+            printf("SlaveShareBlockLogic\n");
+            //
+            int htype = handlerCtx->msg->handleType;
+            switch(htype)
+            {
+                case ReqCliLogicMS:
+                {
+                    //
 
+                    break;
+                }
+            }
         }
 };
 

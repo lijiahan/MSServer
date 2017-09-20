@@ -236,13 +236,6 @@ class MsgMgr
 };
 
 //
-class MsgServerInterface
-{
-    virtual void initServerByMsg(InterComMsg *msg, ConnCtx * conn, void * resData) = 0;
-    virtual void sendMsgToServer(SendMsgInfo * sendMsg) = 0;
-};
-
-//
 class MsgMoudleInterface
 {
     public:
@@ -252,7 +245,7 @@ class MsgMoudleInterface
         virtual void moudleHandler( ConnCtx * conn, InterComMsg * inMsg ) = 0;
 };
 
-class MsgMoudleMgr : public MsgServerInterface
+class MsgMoudleMgr
 {
     public:
         MsgMoudleMgr()
@@ -262,22 +255,24 @@ class MsgMoudleMgr : public MsgServerInterface
         virtual ~MsgMoudleMgr(){}
         //
         virtual void initMsgMoudle() = 0;
+        virtual void initServerByMsg(InterComMsg *msg, ConnCtx * conn, void * resData) = 0;
+        virtual void sendMsgToServer(SendMsgInfo * sendMsg) = 0;
         //
         void registerMsgMoudle(int type, MsgMoudleInterface * moudle)
         {
-            moudleInterfaceMap.insert(std::pair<int, MsgMoudleInterface *>(type, moudle));
+            msgInterfaceMap.insert(std::pair<int, MsgMoudleInterface *>(type, moudle));
         }
 
         MsgMoudleInterface * unregisterMsgMoudle(int type)
         {
             MsgMoudleInterface * inf = NULL;
-            std::map<int, MsgMoudleInterface * >::iterator it = moudleInterfaceMap.find(type);
-            if( it != moudleInterfaceMap.end() )
+            std::map<int, MsgMoudleInterface * >::iterator it = msgInterfaceMap.find(type);
+            if( it != msgInterfaceMap.end() )
             {
                 inf = it->second;
             }
 
-            moudleInterfaceMap.erase(type);
+            msgInterfaceMap.erase(type);
             return inf;
         }
 
@@ -285,8 +280,8 @@ class MsgMoudleMgr : public MsgServerInterface
         {
             int moudleType = inMsg->msgMoudleType;
 
-            std::map<int, MsgMoudleInterface * >::iterator it = moudleInterfaceMap.find(moudleType);
-            if( it != moudleInterfaceMap.end() )
+            std::map<int, MsgMoudleInterface * >::iterator it = msgInterfaceMap.find(moudleType);
+            if( it != msgInterfaceMap.end() )
             {
                 MsgMoudleInterface * inf = it->second;
                 inf->moudleHandler(conn, inMsg);
@@ -298,7 +293,7 @@ class MsgMoudleMgr : public MsgServerInterface
         }
 
     public:
-        std::map<int, MsgMoudleInterface *> moudleInterfaceMap;
+        std::map<int, MsgMoudleInterface *> msgInterfaceMap;
 };
 
 #endif // MSGIMPLST_HPP_INCLUDED

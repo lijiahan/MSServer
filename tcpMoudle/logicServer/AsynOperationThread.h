@@ -22,6 +22,7 @@ class AsynOperationThread : public EventExtraInterface
         //
         virtual void initServerByMsg(InterComMsg *msg, ConnCtx * conn, void * resData);
         virtual void initMsgMoudle();
+        virtual void sendMsgToServer(SendMsgInfo * sendMsg);
 
         //
         int addWriteConn( ConnCtx * conn );

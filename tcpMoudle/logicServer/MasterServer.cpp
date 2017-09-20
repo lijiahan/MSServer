@@ -109,6 +109,9 @@ void MasterServer::initServerByMsg(InterComMsg *msg, ConnCtx * conn, void * resD
             res->logicSvrIndex = svrConnCtxMgr->addGateWayCtx(conn, res->serverId);
             //
             conn->connType = ConnGateWay;
+
+            printf("ReqGWConnectMS: fd : %d gateServer id: %d, ind : %d connect logic!!\n", conn->fd, res->serverId, res->logicSvrIndex);
+
             break;
         }
 
@@ -119,6 +122,8 @@ void MasterServer::initServerByMsg(InterComMsg *msg, ConnCtx * conn, void * resD
             res->logicSvrIndex = svrConnCtxMgr->addSServerCtx(conn, res->serverId, res->ip, res->prot);
             //
             conn->connType = ConnSlave;
+
+            printf("ReqSSConnectMS: fd : %d ind : %d connect logic!!\n", conn->fd, res->logicSvrIndex);
             break;
         }
     }
@@ -146,14 +151,45 @@ void MasterServer::initLogicMoudle()
     registerLogicMoudle(IndenpentBlockMoulde, independMoudle);
 }
 
-int MasterServer::diapatchServerInd(int blockId)
+SlaveServerCtx * MasterServer::diapatchServerInd(int blockId)
 {
-    return 0;
+    //
+    SlaveServerCtx * ssCtx = svrConnCtxMgr->dispatchLogicServer();
+    return ssCtx;
 }
 
 void MasterServer::addServerInd(int ind)
 {
 
+}
+
+
+void MasterServer::handleDataConflict(ClientCtx * clientCtx, MoudleDataCheck * dataCheck, ConnCtx * conn)
+{
+    //
+}
+
+void MasterServer::handleDispacthServer(ClientCtx * clientCtx, MoudleDataCheck * dataCheck, ConnCtx * conn)
+{
+    //
+    for(int i=0; i<dataCheck->dataNum; i++)
+    {
+        DataMoudleCtx * dataCtx = clientCtx->getDataCtx(dataCheck->dataIndex[i]);
+        dataCtx->dispIndex = dataCheck->slaveCtx->slaveSvrIndex;
+    }
+
+    //
+    char mbuf[256];
+    memset(mbuf, 0, 256);
+    InterComMsg * rm = MsgMgr::buildInterComMsg(mbuf, LogicMouldeType, ReqCliLogicMS,
+                             0, clientCtx->clConnCtx.connIndex, ShareBlockMoulde, clientCtx->uid, MsgMgr::CliLogicMSTLen);
+
+    GateWayCtx * gateWayCtx = svrConnCtxMgr->getGateWayCtx(conn);
+    MsgMgr::buildCliLogicMST(rm->data, ReqCliLogicMS, clientCtx->uid, gateWayCtx->serverId, dataCheck->logicId);
+
+
+    ServerDataCtx * extraSlaveData = (ServerDataCtx *) (dataCheck->slaveCtx->conn->eDataCtx);
+    asynThread->asynWriteMsg(rm, extraSlaveData->writeInd);
 }
 
 void MasterServer::logicMoudle(ConnCtx * conn, InterComMsg * msg)
@@ -166,59 +202,34 @@ void MasterServer::logicMoudle(ConnCtx * conn, InterComMsg * msg)
     {
         HandlerCtx * handlerCtx = handlerCtxMgr->getCtx(msg->handlerInd, conn, msg, clientCtx, clientCtxMgr);
         MOUDLEID mid = msg->logicMoudleId;
-        std::map<int, LogicMoudleInterface * >::iterator it = moudleInterfaceMap.find(mid);
-        if( it != moudleInterfaceMap.end() )
+        LogicMoudleInterface * mif = getLogicMoudleInf(mid);
+        if( mif != NULL )
         {
             printf("logicMoudle uid %d mid %d \n", uid, mid);
-            LogicMoudleInterface * mif = it->second;
             //
             MoudleDataCheck dtCheck;
             memset(&dtCheck, 0, sizeof(MoudleDataCheck));
-            dtCheck->logicId = mid;
-            dtCheck.dispIndex = diapatchServerInd(mid);
-            int sInd = mif->getDataCheck(clientCtx, &dtCheck);
+            dtCheck.logicId = mid;
+            dtCheck.slaveCtx = diapatchServerInd(mid);
 
-            //
-            if(sInd == -1)
+            if( dtCheck.slaveCtx != NULL )
             {
-                handleDataConflict(clientCtx, &dtCheck);
-            }
-            else
-            {
-                handleDispacthServer(clientCtx, &dtCheck);
+                int sInd = mif->getDataCheck(clientCtx, &dtCheck);
+
+                //
+                if(sInd == -1)
+                {
+                    handleDataConflict(clientCtx, &dtCheck, conn);
+                }
+                else
+                {
+                    handleDispacthServer(clientCtx, &dtCheck, conn);
+                }
             }
         }
     }
 }
 //
-
-void handleDataConflict(ClientCtx * clientCtx, MoudleDataCheck * dataCheck, ConnCtx * conn)
-{
-    //
-}
-
-void handleDispacthServer(ClientCtx * clientCtx, MoudleDataCheck * dataCheck,ConnCtx * conn)
-{
-    //
-    for(int i=0; i<dataCheck->dataNum; i++)
-    {
-        DataMoudleCtx * dataCtx = clientCtx->getDataCtx(dataCheck->dataIndex[i]);
-        dataCtx->dispIndex = dataCheck->dispIndex;
-    }
-
-    //
-    char mbuf[256];
-    memset(mbuf, 0, 256);
-    InterComMsg * rm = MsgMgr::buildInterComMsg(mbuf, LogicMouldeType, ReqCliLogicMS,
-                             0, client->clConnCtx.connIndex, 0, client->uid, 0);
-
-    GateWayCtx * gateWayCtx = svrConnCtxMgr->getGateWayCtx(dataCheck->dispIndex);
-    MsgMgr::buildCliLogicMST(rm->data, ReqCliLogicMS, clientCtx->uid, gateWayCtx->serverId, dataCheck->logicId);
-
-    SlaveServerCtx * slaveCtx = svrConnCtxMgr->getSServerCtx(conn);
-    ServerDataCtx * extraSlaveData = (ServerDataCtx *) (slaveCtx->conn->eDataCtx);
-    asynThread->asynWriteMsg(rm, extraSlaveData->writeInd);
-}
 
 //
 void MasterServer::sendMsgToServer(SendMsgInfo * msgInfo)
@@ -241,7 +252,7 @@ void MasterServer::sendMsgToServer(SendMsgInfo * msgInfo)
         case SendAllSSMsgToConn:
         {
             ServerDataCtx * extraData = (ServerDataCtx *) (msgInfo->conn->eDataCtx);
-            svrConnCtxMgr->sendAllSSMsgToConn(extraData->writeInd, asynThread);
+            svrConnCtxMgr->sendAllSSInfoToConn(extraData->writeInd, asynThread);
             break;
         }
     }

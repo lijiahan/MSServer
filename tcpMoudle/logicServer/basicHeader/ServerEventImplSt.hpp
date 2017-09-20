@@ -50,7 +50,7 @@ class DataMoudleCtx
 class LogicMoudleCtx
 {
     public:
-        DataMoudleCtx()
+        LogicMoudleCtx()
         {
             type = 0;
             state = 0;
@@ -83,23 +83,23 @@ class ClientCtx
 
         ~ClientCtx()
         {
-            std::map<MOUDLEID, DataMoudleCtx* >::iterator it;
-            for( it = dataMoudleMap.begin(); it != dataMoudleMap.end(); it++ )
+            std::map<MOUDLEID, DataMoudleCtx* >::iterator itData;
+            for( itData = dataMoudleMap.begin(); itData != dataMoudleMap.end(); itData++ )
             {
-                if(it->second != NULL)
+                if(itData->second != NULL)
                 {
-                    delete it->second;
+                    delete itData->second;
                 }
             }
             dataMoudleMap.clear();
 
             //
-            std::map<MOUDLEID, LogicMoudleCtx* >::iterator it;
-            for( it = logicMoudleMap.begin(); it != logicMoudleMap.end(); it++ )
+            std::map<MOUDLEID, LogicMoudleCtx* >::iterator itLogic;
+            for( itLogic = logicMoudleMap.begin(); itLogic != logicMoudleMap.end(); itLogic++ )
             {
-                if(it->second != NULL)
+                if(itLogic->second != NULL)
                 {
-                    delete it->second;
+                    delete itLogic->second;
                 }
             }
             logicMoudleMap.clear();
@@ -122,6 +122,7 @@ class ClientCtx
             return dataCtx;
         }
 
+        //
         LogicMoudleCtx * getLogicCtx( MOUDLEID mid )
         {
             LogicMoudleCtx * logicCtx = NULL;
@@ -132,7 +133,7 @@ class ClientCtx
             }
             else
             {
-                logicCtx = new DataMoudleCtx();
+                logicCtx = new LogicMoudleCtx();
                 logicMoudleMap[mid] = logicCtx;
             }
 
@@ -224,6 +225,11 @@ class ClientCtxMgr
 
             clientFreeVec.push_back(clientCtx);
             //
+        }
+
+        void preDataCtx(ClientCtx * cliCtx, MOUDLEID mid)
+        {
+
         }
 
     private:
@@ -344,7 +350,7 @@ struct MoudleDataCheck
     int logicId;
     int dataNum;
     int dataIndex[ModuleMaxNum];
-    int dispIndex;
+    SlaveServerCtx * slaveCtx;
 };
 
 class LogicMoudleInterface
@@ -353,9 +359,9 @@ class LogicMoudleInterface
         LogicMoudleInterface(){}
         virtual ~LogicMoudleInterface(){}
 
-        virtual int getDataCheckgetDataCheck(ClientCtx * clientCtx, MoudleDataCheck * dataCheck)
+        virtual int getDataCheck(ClientCtx * clientCtx, MoudleDataCheck * dataCheck)
         {
-            return 0;
+            return dataCheck->slaveCtx->slaveSvrIndex;
         }
 
         virtual void logicHander(HandlerCtx * handlerCtx)
@@ -364,7 +370,7 @@ class LogicMoudleInterface
         }
 };
 
-class LogicMoudleMgr : public MsgServerInterface
+class LogicMoudleMgr
 {
     public:
         LogicMoudleMgr()
@@ -381,25 +387,25 @@ class LogicMoudleMgr : public MsgServerInterface
         }
 
         virtual void initLogicMoudle() = 0;
-        virtual int diapatchServerInd(int blockId) = 0;
+        virtual SlaveServerCtx * diapatchServerInd(int blockId) = 0;
         virtual void addServerInd(int ind) = 0;
         virtual void logicMoudle(ConnCtx * conn, InterComMsg * msg) = 0;
          //
         void registerLogicMoudle(int type, LogicMoudleInterface * moudle)
         {
-            moudleInterfaceMap.insert(std::pair<int, LogicMoudleInterface *>(type, moudle));
+            logicInterfaceMap.insert(std::pair<int, LogicMoudleInterface *>(type, moudle));
         }
 
         LogicMoudleInterface * unregisterLogicMoudle(int type)
         {
             LogicMoudleInterface * inf = NULL;
-            std::map<int, LogicMoudleInterface * >::iterator it = moudleInterfaceMap.find(type);
-            if( it != moudleInterfaceMap.end() )
+            std::map<int, LogicMoudleInterface * >::iterator it = logicInterfaceMap.find(type);
+            if( it != logicInterfaceMap.end() )
             {
                 inf = it->second;
             }
 
-            moudleInterfaceMap.erase(type);
+            logicInterfaceMap.erase(type);
             return inf;
         }
 
@@ -414,13 +420,25 @@ class LogicMoudleMgr : public MsgServerInterface
             return clientCtx;
         }
 
+        LogicMoudleInterface * getLogicMoudleInf( int mid)
+        {
+            LogicMoudleInterface * mif = NULL;
+            std::map<int, LogicMoudleInterface * >::iterator it = logicInterfaceMap.find(mid);
+            if( it != logicInterfaceMap.end() )
+            {
+                mif = it->second;
+            }
+
+            return mif;
+        }
+
         void freeClientCtx(ClientCtx * clientCtx)
         {
             clientCtxMgr->freeCtx(clientCtx);
         }
 
     public:
-        std::map<int, LogicMoudleInterface *> moudleInterfaceMap;
+        std::map<int, LogicMoudleInterface *> logicInterfaceMap;
         ClientCtxMgr * clientCtxMgr;
         HandlerCtxMgr * handlerCtxMgr;
 };

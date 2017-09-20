@@ -5,6 +5,7 @@
 SlaveServer::SlaveServer()
 {
     //ctor
+    serverId = 0;
     masterCtx = (MasterServerCtx *) malloc(sizeof(MasterServerCtx));
     masterCtx->conn = NULL;
     masterCtx->slaveInd = 0;
@@ -49,7 +50,7 @@ void SlaveServer::initialServer(std::string ip, int port, std::string masterLgIp
     //
     SlaveSvrConnectMST * msgSt = (SlaveSvrConnectMST *) (msg->data);
     msgSt->handleType = ReqSSConnectMS;
-    msgSt->serverId = serverId;
+    msgSt->serverId = serverId = port;
     strcpy(msgSt->ip, ip.c_str());
     msgSt->prot = port;
     msg->msgLen = wlen;
@@ -57,6 +58,7 @@ void SlaveServer::initialServer(std::string ip, int port, std::string masterLgIp
     connectMasterServer(masterLgIp, masterLgPort, msg);
     //
     initMsgMoudle();
+    initLogicMoudle();
     //
     startServer();
 }
@@ -160,20 +162,24 @@ void SlaveServer::initServerByMsg(InterComMsg *msg, ConnCtx * conn, void * resDa
 {
     switch(msg->handleType)
     {
+        case ResSSConnectMS:
+        {
+            SlaveSvrConnectMST * mst = (SlaveSvrConnectMST *) resData;
+            serverInd = mst->logicSvrIndex;
+            printf("ResSSConnectMS!! severId : %d \n", serverId);
+            break;
+        }
+
         case ReqGWConnectSS:
         {
             GateWayConnectMST * res = (GateWayConnectMST *) resData;
             //
-            res->logicSvrIndex = gWConnMgr->addGateWayCtx(conn, res->serverId);
+            gWConnMgr->addGateWayCtx(conn, res->serverId);
+            res->logicSvrIndex = serverInd;
             //
             conn->connType = ConnGateWay;
-
-            break;
-        }
-
-        case ResSSConnectMS:
-        {
-            printf("ResSSConnectMS!! severId : %d \n", serverId);
+            //
+            printf("ReqGWConnectSS!! severId: %d serverInd: %d \n", res->serverId, serverInd);
             break;
         }
     }
@@ -192,12 +198,16 @@ void SlaveServer::initMsgMoudle()
 
 void SlaveServer::initLogicMoudle()
 {
+    LogicMoudleInterface * shareMoudle = new SlaveShareBlockLogic();
+    registerLogicMoudle(ShareBlockMoulde, shareMoudle);
 
+    LogicMoudleInterface * independMoudle = new SlaveIndenpentBlockLogic();
+    registerLogicMoudle(IndenpentBlockMoulde, independMoudle);
 }
 
-int SlaveServer::diapatchServerInd(int blockId)
+SlaveServerCtx * SlaveServer::diapatchServerInd(int blockId)
 {
-    return 0;
+    return NULL;
 }
 
 void SlaveServer::addServerInd(int ind)
@@ -210,19 +220,17 @@ void SlaveServer::logicMoudle(ConnCtx * conn, InterComMsg * msg)
 {
     CLIENTIDTYPE uid = msg->uId;
     ClientCtx * clientCtx = clientCtxMgr->getCtx(uid);
-
     //
     if( clientCtx != NULL )
     {
         HandlerCtx * handlerCtx = handlerCtxMgr->getCtx(msg->handlerInd, conn, msg, clientCtx, clientCtxMgr);
         MOUDLEID mid = msg->logicMoudleId;
-        std::map<int, LogicMoudleInterface * >::iterator it = moudleInterfaceMap.find(mid);
-        if( it != moudleInterfaceMap.end() )
+        LogicMoudleInterface * mif = getLogicMoudleInf(mid);
+        if( mif != NULL )
         {
             printf("logicMoudle uid %d mid %d \n", uid, mid);
-            LogicMoudleInterface * mif = it->second;
             //
-            mif->
+            mif->logicHander(handlerCtx);
         }
     }
 }

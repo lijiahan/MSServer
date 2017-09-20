@@ -85,6 +85,11 @@ void AsynOperationThread::initMsgMoudle()
 
 }
 
+//
+void AsynOperationThread::sendMsgToServer(SendMsgInfo * msgInfo)
+{
+}
+
 void AsynOperationThread::onWriteEvent( ConnCtx * conn )
 {
     struct msghdr  msg;

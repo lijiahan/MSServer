@@ -22,11 +22,9 @@ class MasterInitMsgMoudle : public MsgMoudleInterface
             {
                 case ReqGWConnectMS:
                 {
-                    GateWayConnectMST * mst = (GateWayConnectMST *) (iMsg->data);
-
                     ServerExtraInterface * ein = (ServerExtraInterface *) (conn->serverCtx);
-                    ein->initServerByMsg(iMsg, conn, (void *) mst);
-                    printf("ReqGWConnectMS:fd : %d, gateServer id: %d, connect master!!\n", conn->fd, mst->serverId);
+                    ein->initServerByMsg(iMsg, conn, (void *) (iMsg->data));
+
                     //
                     resGWConnectMS(conn, iMsg);
 
@@ -35,14 +33,9 @@ class MasterInitMsgMoudle : public MsgMoudleInterface
 
                 case ReqSSConnectMS:
                 {
-                    SlaveSvrConnectMST * mst = (SlaveSvrConnectMST *) (iMsg->data);
-
                     ServerExtraInterface * ein = (ServerExtraInterface *) (conn->serverCtx);
-                    ein->initServerByMsg(iMsg, conn, (void *) mst);
-
+                    ein->initServerByMsg(iMsg, conn, (void *) (iMsg->data) );
                     // re
-                    printf("ReqSSConnectMS: fd : %d connect logic!!\n", conn->fd);
-
                     resSSConnectMS(conn, iMsg);
                     break;
                 }
@@ -102,6 +95,7 @@ class MasterInitMsgMoudle : public MsgMoudleInterface
 
         ServerExtraInterface * ein = (ServerExtraInterface *) (conn->serverCtx);
         ein->sendMsgToServer(&msgInfo);
+
         //
         msgInfo.msgType = SendAllSSMsgToConn;
         ein->sendMsgToServer(&msgInfo);
@@ -165,35 +159,25 @@ class SlaveInitMsgMoudle : public MsgMoudleInterface
         {
             switch(iMsg->handleType)
             {
+                case ResSSConnectMS:
+                {
+                    ServerExtraInterface * ein = (ServerExtraInterface *) (conn->serverCtx);
+                    ein->initServerByMsg(iMsg, conn, (void *) (iMsg->data) );
+                    //
+                    break;
+                }
+
                 case ReqGWConnectSS:
                 {
-                    SlaveSvrConnectMST * mst = (SlaveSvrConnectMST *) (iMsg->data);
-
                     ServerExtraInterface * ein = (ServerExtraInterface *) (conn->serverCtx);
-                    ein->initServerByMsg(iMsg, conn, (void *) mst);
-                    printf("ReqGWConnectSS: fd:%d, gateServer index: %d, connect master!!\n", conn->fd, mst->serverId);
+                    ein->initServerByMsg(iMsg, conn, (void *) (iMsg->data) );
                     //
-                    resGWConnectSS(conn, iMsg);
                     break;
                 }
 
                 default:
                     break;
             }
-        }
-
-        void resGWConnectSS( ConnCtx * conn, InterComMsg * iMsg )
-        {
-            GateWayConnectMST * mst = (GateWayConnectMST *) (iMsg->data);
-            // re
-            iMsg->handleType = ResGWConnectSS;
-            mst->handleType = ResGWConnectSS;
-
-            SendMsgInfo msgInfo;
-            MsgMgr::makeSendDataInfo(&msgInfo, SendMsgToConn, msgInfo->conn, iMsg, iMsg->data, iMsg->msgLen);
-
-            ServerExtraInterface * ein = (ServerExtraInterface *) (conn->serverCtx);
-            ein->sendMsgToServer(&msgInfo);
         }
 };
 

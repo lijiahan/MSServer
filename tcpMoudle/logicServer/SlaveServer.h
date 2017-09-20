@@ -34,17 +34,17 @@ class GWConnCtxMgr
 
         int addGateWayCtx( ConnCtx * conn, int sid )
         {
+            int ind = calGateWayInd();
             GateWayCtx * gwCtx = (GateWayCtx *) malloc(sizeof(GateWayCtx));
             gwCtx->conn = conn;
             gwCtx->serverId = sid;
-            gwCtx->gateWayIndex = gwIndex;
-            gateWayMap[gwIndex] = gwCtx;
+            gwCtx->gateWayIndex = ind;
+            gateWayMap[ind] = gwCtx;
 
             ServerDataCtx * extraData = (ServerDataCtx *) conn->eDataCtx;
-            extraData->ctxIndex = gwIndex;
+            extraData->ctxIndex = ind;
 
-            gwIndex++;
-            return gwCtx->gateWayIndex;
+            return ind;
         }
 
         GateWayCtx * getGateWayCtx( int ind )
@@ -59,7 +59,7 @@ class GWConnCtxMgr
             return ctx;
         }
 
-        GateWayCtx * getGateWayCtx( int sid )
+        GateWayCtx * getGateWayCtxBySId( int sid )
         {
             std::map<int, GateWayCtx *>::iterator itmp;
             for( itmp = gateWayMap.begin(); itmp != gateWayMap.end(); itmp++ )
@@ -115,6 +115,11 @@ class GWConnCtxMgr
             }
         }
 
+        int calGateWayInd()
+        {
+            return 100 + gwIndex++;
+        }
+
     private:
         int gwIndex;
         std::map<int, GateWayCtx *>  gateWayMap;
@@ -140,7 +145,7 @@ class SlaveServer : public ServerExtraInterface
         virtual void initServerByMsg(InterComMsg *msg, ConnCtx * conn, void * resData);
         //
         virtual void initLogicMoudle();
-        virtual int diapatchServerInd(int blockId);
+        virtual SlaveServerCtx * diapatchServerInd(int blockId);
         virtual void addServerInd(int ind);
         virtual void logicMoudle(ConnCtx * conn, InterComMsg * msg);
         //
@@ -149,6 +154,7 @@ class SlaveServer : public ServerExtraInterface
     private:
         //
         int serverId;
+        int serverInd;
         int asynFd;
         AsynOperationThread * asynThread;
         MasterServerCtx * masterCtx;

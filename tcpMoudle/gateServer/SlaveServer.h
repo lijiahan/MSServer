@@ -31,6 +31,7 @@ class LogicServerMgr
         {
             masterIndex = ind;
             logicServerMap[ind] = conn;
+            printf("masterIndex %d\n", ind);
         }
 
         void addLogicServer(int ind, ConnCtx * conn)

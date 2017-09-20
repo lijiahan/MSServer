@@ -40,22 +40,23 @@ class ServerConnCtxMgr
 
         int addSServerCtx( ConnCtx * conn, int sid, char *ip, int port )
         {
+            int ind = calSlaveSvrInd();
+
             SlaveServerCtx * ssCtx = (SlaveServerCtx *) malloc(sizeof(SlaveServerCtx));
             ssCtx->conn =  conn;
             ssCtx->serverId = sid;
-            ssCtx->slaveSvrIndex = ssIndex;
+            ssCtx->slaveSvrIndex = ind;
             ssCtx->connNum = 0;
             ssCtx->weight = 0;
             strcpy(ssCtx->ip, ip);
             ssCtx->port = port;
 
-            slaveSvrMap[ssIndex] = ssCtx;
+            slaveSvrMap[ind] = ssCtx;
 
             ServerDataCtx * extraData = (ServerDataCtx *) conn->eDataCtx;
-            extraData->ctxIndex = ssIndex;
+            extraData->ctxIndex = ind;
 
-            ssIndex++;
-            return ssCtx->slaveSvrIndex;
+            return ind;
         }
 
         SlaveServerCtx * getSServerCtx( int ind )
@@ -97,19 +98,47 @@ class ServerConnCtxMgr
             extraData->ctxIndex = 0;
         }
 
+        //
+        SlaveServerCtx * dispatchLogicServer()
+        {
+            SlaveServerCtx * ssCtx = NULL;
+            int weight = 0;
+
+            std::map<int, SlaveServerCtx *>::iterator it1;
+            for( it1 = slaveSvrMap.begin(); it1 != slaveSvrMap.end(); it1++ )
+            {
+                SlaveServerCtx * tempCtx = it1->second;
+                if( ssCtx == NULL )
+                {
+                    ssCtx = tempCtx;
+                    weight = tempCtx->weight;
+                    continue;
+                }
+
+                if( tempCtx->weight < weight )
+                {
+                    ssCtx = tempCtx;
+                    weight = tempCtx->weight;
+                }
+            }
+
+            return ssCtx;
+        }
+
         int addGateWayCtx( ConnCtx * conn, int sid )
         {
+            int ind = calGateWayInd();
+
             GateWayCtx * gwCtx = (GateWayCtx *) malloc(sizeof(GateWayCtx));
             gwCtx->conn = conn;
             gwCtx->serverId = sid;
-            gwCtx->gateWayIndex = gwIndex;
-            gateWayMap[gwIndex] = gwCtx;
+            gwCtx->gateWayIndex = ind;
+            gateWayMap[ind] = gwCtx;
 
             ServerDataCtx * extraData = (ServerDataCtx *) conn->eDataCtx;
-            extraData->ctxIndex = gwIndex;
+            extraData->ctxIndex = ind;
 
-            gwIndex++;
-            return gwCtx->gateWayIndex;
+            return ind;
         }
 
         GateWayCtx * getGateWayCtx( int ind )
@@ -124,7 +153,7 @@ class ServerConnCtxMgr
             return ctx;
         }
 
-        GateWayCtx * getGateWayCtx( int sid )
+        GateWayCtx * getGateWayCtxBySId( int sid )
         {
             std::map<int, GateWayCtx *>::iterator itmp;
             for( itmp = gateWayMap.begin(); itmp != gateWayMap.end(); itmp++ )
@@ -180,7 +209,7 @@ class ServerConnCtxMgr
             }
         }
 
-        void sendAllSSMsgToConn(int writeInd, AsynOperationThread * asynThread)
+        void sendAllSSInfoToConn(int writeInd, AsynOperationThread * asynThread)
         {
             int wlen = MsgMgr::SlaveSvrConnectMSTLen + MsgMgr::InterComMsgLen;
             char msgBuf[1024];
@@ -199,6 +228,16 @@ class ServerConnCtxMgr
                     asynThread->asynWriteMsg(msg, writeInd);
                 }
             }
+        }
+
+        int calSlaveSvrInd()
+        {
+            return 200 + ssIndex++;
+        }
+
+        int calGateWayInd()
+        {
+            return 100 + gwIndex++;
         }
 
     private:
@@ -229,11 +268,14 @@ class MasterServer : public ServerExtraInterface
         virtual void initServerByMsg(InterComMsg *msg, ConnCtx * conn, void * resData);
         //
         virtual void initLogicMoudle();
-        virtual int diapatchServerInd(int blockId);
+        virtual SlaveServerCtx * diapatchServerInd(int blockId);
         virtual void addServerInd(int ind);
         virtual void logicMoudle(ConnCtx * conn, InterComMsg * msg);
-
         virtual void sendMsgToServer(SendMsgInfo * sendMsg);
+
+        //
+        void handleDataConflict(ClientCtx * clientCtx, MoudleDataCheck * dataCheck, ConnCtx * conn);
+        void handleDispacthServer(ClientCtx * clientCtx, MoudleDataCheck * dataCheck,ConnCtx * conn);
 
     private:
         //

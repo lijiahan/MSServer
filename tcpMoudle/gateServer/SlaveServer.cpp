@@ -334,14 +334,15 @@ void SlaveServer::serverConnError(int errCode, ConnCtx * svrConn)
     }
 }
 
-void SlaveServer::initConnByMsg(int handlerState, void *msg, ConnCtx * conn, void * resData)
+void SlaveServer::initConnByMsg(int handlerState, void * msg, ConnCtx * conn, void * resData)
 {
     switch(handlerState)
     {
         case ResGWConnectMS:
         {
-            GateWayConnectMST * msgSt = (GateWayConnectMST *) msg;
-            printf("ResGWConnectMS!!! %d\n", msgSt->logicSvrIndex);
+            InterComMsg * inMsg = (InterComMsg *) msg;
+            GateWayConnectMST * msgSt = (GateWayConnectMST *) (inMsg->data);
+            printf("*&*ResGWConnectMS!!! serverInd: %d, fd: %d\n", msgSt->logicSvrIndex, conn->fd);
             conn->connType = ConnMLogicServer;
             //
             ServerCnCtx::setIndByConn(conn, msgSt->logicSvrIndex);
@@ -357,8 +358,9 @@ void SlaveServer::initConnByMsg(int handlerState, void *msg, ConnCtx * conn, voi
             InterComMsg * inMsg = (InterComMsg *) msg;
             inMsg->msgMoudleType = GateWayMsgType;
             //
-            SlaveSvrConnectMST * msgSt = (SlaveSvrConnectMST *) inMsg->data;
-            printf("ReqGWConnectSS logicSvrIndex = %d \n", msgSt->logicSvrIndex);
+            SlaveSvrConnectMST * msgSt = (SlaveSvrConnectMST *) (inMsg->data);
+            printf("**ReqGWConnectSS serverInd : %d serverId: %d \n", msgSt->logicSvrIndex, msgSt->serverId);
+
             //
             std::string masterLgIp = msgSt->ip;
             int masterLgPort = msgSt->prot;
@@ -368,14 +370,16 @@ void SlaveServer::initConnByMsg(int handlerState, void *msg, ConnCtx * conn, voi
             ServerCnCtx::setIndByConn(slaveConn, msgSt->logicSvrIndex);
             logicSvrMgr->addLogicServer(msgSt->logicSvrIndex, slaveConn);
             //
-            printf(" connect logic slave server successfully ip: %s  port : %d\n", msgSt->ip, msgSt->prot);
+            printf("****connect logic slave server successfully ip: %s  port : %d\n", msgSt->ip, msgSt->prot);
 
             break;
         }
         //
         case ResGWConnectSS:
         {
-            printf("ResGWConnectSS!!!\n");
+            InterComMsg * inMsg = (InterComMsg *) msg;
+            SlaveSvrConnectMST * msgSt = (SlaveSvrConnectMST *) (inMsg->data);
+            printf("ResGWConnectSS serverInd : %d fd: %d \n", msgSt->logicSvrIndex, conn->fd);
             break;
         }
 
