@@ -1,0 +1,120 @@
+# depslib dependency file v1.0
+1495097291 source:/home/ljh/Desktop/myWork/tcpMoudle/client/main.cpp
+	<iostream>
+	"client.h"
+
+1502245904 source:/home/ljh/Desktop/myWork/tcpMoudle/client/client.cpp
+	"client.h"
+
+1502245685 /home/ljh/Desktop/myWork/tcpMoudle/client/client.h
+	"baseStructHeader.h"
+	<time.h>
+	<sys/time.h>
+
+1503490417 /home/ljh/Desktop/myWork/tcpMoudle/client/baseStructHeader.h
+	<string>
+	<iostream>
+	<sstream>
+	<netinet/in.h>
+	<netinet/tcp.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<stdio.h>
+	<unistd.h>
+	<stdlib.h>
+	<errno.h>
+	<vector>
+	<cstring>
+	<arpa/inet.h>
+	<pthread.h>
+	<event.h>
+	<event2/util.h>
+	<event2/event.h>
+	<event2/thread.h>
+	"ConnectMsg.pb.h"
+
+1494387086 /home/ljh/Desktop/myWork/tcpMoudle/client/ConnectMsg.pb.h
+	<string>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/arena.h>
+	<google/protobuf/arenastring.h>
+	<google/protobuf/generated_message_table_driven.h>
+	<google/protobuf/generated_message_util.h>
+	<google/protobuf/metadata.h>
+	<google/protobuf/message.h>
+	<google/protobuf/repeated_field.h>
+	<google/protobuf/extension_set.h>
+	<google/protobuf/unknown_field_set.h>
+
+1494387086 source:/home/ljh/Desktop/myWork/tcpMoudle/client/ConnectMsg.pb.cc
+	"ConnectMsg.pb.h"
+	<algorithm>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/stubs/port.h>
+	<google/protobuf/stubs/once.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/wire_format_lite_inl.h>
+	<google/protobuf/descriptor.h>
+	<google/protobuf/generated_message_reflection.h>
+	<google/protobuf/reflection_ops.h>
+	<google/protobuf/wire_format.h>
+
+1494387086 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/client/ConnectMsg.pb.cc
+	"ConnectMsg.pb.h"
+	<algorithm>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/stubs/port.h>
+	<google/protobuf/stubs/once.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/wire_format_lite_inl.h>
+	<google/protobuf/descriptor.h>
+	<google/protobuf/generated_message_reflection.h>
+	<google/protobuf/reflection_ops.h>
+	<google/protobuf/wire_format.h>
+
+1494387086 /home/ljh/Desktop/MSServer-git/tcpMoudle/client/ConnectMsg.pb.h
+	<string>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/io/coded_stream.h>
+	<google/protobuf/arena.h>
+	<google/protobuf/arenastring.h>
+	<google/protobuf/generated_message_table_driven.h>
+	<google/protobuf/generated_message_util.h>
+	<google/protobuf/metadata.h>
+	<google/protobuf/message.h>
+	<google/protobuf/repeated_field.h>
+	<google/protobuf/extension_set.h>
+	<google/protobuf/unknown_field_set.h>
+
+1495097291 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/client/main.cpp
+	<iostream>
+	"client.h"
+
+1502245685 /home/ljh/Desktop/MSServer-git/tcpMoudle/client/client.h
+	"baseStructHeader.h"
+	<time.h>
+	<sys/time.h>
+
+1505122077 /home/ljh/Desktop/MSServer-git/tcpMoudle/client/baseStructHeader.h
+	<string>
+	<iostream>
+	<sstream>
+	<netinet/in.h>
+	<netinet/tcp.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<stdio.h>
+	<unistd.h>
+	<stdlib.h>
+	<errno.h>
+	<vector>
+	<cstring>
+	<arpa/inet.h>
+	<pthread.h>
+	<event.h>
+	<event2/util.h>
+	<event2/event.h>
+	<event2/thread.h>
+	"ConnectMsg.pb.h"
+
