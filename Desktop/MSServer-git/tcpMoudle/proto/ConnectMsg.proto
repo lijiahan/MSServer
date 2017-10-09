@@ -1,0 +1,6 @@
+syntax = "proto2";
+message ClientConnect
+{
+	  required uint32 uId = 1;
+	  optional int32 type = 2; 
+}

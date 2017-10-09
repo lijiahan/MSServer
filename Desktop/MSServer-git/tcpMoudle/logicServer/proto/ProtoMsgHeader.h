@@ -1,0 +1,7 @@
+#ifndef PROTOMSGHEADER_H_INCLUDED
+#define PROTOMSGHEADER_H_INCLUDED
+
+#include "ConnectMsg.pb.h"
+
+
+#endif // PROTOMSGHEADER_H_INCLUDED
