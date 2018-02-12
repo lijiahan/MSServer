@@ -179,36 +179,36 @@
 1503629120 /home/ljh/Desktop/myWork/tcpMoudle/gateServer/basicHeader/MessageDisposer.hpp
 	"ConnImplSt.hpp"
 
-1460480774 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/base64.cpp
+1506580612 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/base64.cpp
 	"base64.h"
 	<iostream>
 
-1460480774 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/base64.h
+1506580611 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/base64.h
 	<string>
 
-1460480774 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/sha1.cpp
+1506580598 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/sha1.cpp
 	"sha1.h"
 
-1460480774 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/sha1.h
+1506580598 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/sha1.h
 
-1495699117 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/main.cpp
+1517650073 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/main.cpp
 	<iostream>
 	"MasterServer.h"
 
-1496825409 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/MasterServer.h
+1506580578 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/MasterServer.h
 	"SlaveServer.h"
 
-1505727187 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/SlaveServer.h
+1506580577 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/SlaveServer.h
 	"basicHeader/MsgImplSt.hpp"
 	"proto/ProtoMsgHeader.h"
 
-1505101146 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/MsgImplSt.hpp
+1517815975 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/MsgImplSt.hpp
 	"ConnImplSt.hpp"
 
-1502418621 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/ConnImplSt.hpp
+1506580609 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/ConnImplSt.hpp
 	"BaseFileHeader.h"
 
-1497508910 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/BaseFileHeader.h
+1506580610 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/BaseFileHeader.h
 	<string>
 	<iostream>
 	<sstream>
@@ -231,10 +231,10 @@
 	<event2/thread.h>
 	<google/protobuf/message.h>
 
-1495699755 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/proto/ProtoMsgHeader.h
+1506580585 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/proto/ProtoMsgHeader.h
 	"ConnectMsg.pb.h"
 
-1494387086 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/proto/ConnectMsg.pb.h
+1506750941 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/proto/ConnectMsg.pb.h
 	<string>
 	<google/protobuf/stubs/common.h>
 	<google/protobuf/io/coded_stream.h>
@@ -248,10 +248,10 @@
 	<google/protobuf/extension_set.h>
 	<google/protobuf/unknown_field_set.h>
 
-1505704013 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/MasterServer.cpp
+1517650099 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/MasterServer.cpp
 	"MasterServer.h"
 
-1494387086 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/proto/ConnectMsg.pb.cc
+1506750941 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/proto/ConnectMsg.pb.cc
 	"ConnectMsg.pb.h"
 	<algorithm>
 	<google/protobuf/stubs/common.h>
@@ -264,16 +264,17 @@
 	<google/protobuf/reflection_ops.h>
 	<google/protobuf/wire_format.h>
 
-1503568582 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/SlaveServer.cpp
+1506580577 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/SlaveServer.cpp
 	"SlaveServer.h"
 	"basicHeader/H5MessageResolver.hpp"
 	"basicHeader/MessageDisposer.hpp"
 
-1497683425 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/H5MessageResolver.hpp
+1506580607 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/H5MessageResolver.hpp
 	"ConnImplSt.hpp"
 	"sha1.h"
 	"base64.h"
 
-1505706533 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/MessageDisposer.hpp
+1517650022 /home/ljh/Desktop/MSServer-git/tcpMoudle/gateServer/basicHeader/MessageDisposer.hpp
 	"ConnImplSt.hpp"
+	"../proto/ProtoMsgHeader.h"
 

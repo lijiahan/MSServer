@@ -20,6 +20,7 @@
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option projectCompilerOptionsRelation="0" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -38,13 +39,17 @@
 		<Unit filename="MasterServer.cpp" />
 		<Unit filename="MasterServer.h" />
 		<Unit filename="MessageMoudle.hpp" />
+		<Unit filename="MsgImpMgr.hpp" />
 		<Unit filename="SlaveServer.cpp" />
 		<Unit filename="SlaveServer.h" />
+		<Unit filename="baseStructHeader.h" />
 		<Unit filename="basicHeader/BaseFileHeader.h" />
 		<Unit filename="basicHeader/ConnImplSt.hpp" />
 		<Unit filename="basicHeader/EventImplSt.hpp" />
 		<Unit filename="basicHeader/MsgImplSt.hpp" />
 		<Unit filename="basicHeader/ServerEventImplSt.hpp" />
+		<Unit filename="logicServer.depend" />
+		<Unit filename="logicServer.layout" />
 		<Unit filename="main.cpp" />
 		<Unit filename="proto/ConnectMsg.pb.cc" />
 		<Unit filename="proto/ConnectMsg.pb.h" />

@@ -1,0 +1,44 @@
+# depslib dependency file v1.0
+1517644887 source:/home/ljh/Desktop/MSServer-git/tcpMoudle/masterServer/MasterServer/main.cpp
+	<iostream>
+	"InitMoudle.hpp"
+
+1517817582 /home/ljh/Desktop/MSServer-git/tcpMoudle/masterServer/MasterServer/InitMoudle.hpp
+	"HandlerImp.hpp"
+
+1517809528 /home/ljh/Desktop/MSServer-git/tcpMoudle/masterServer/MasterServer/HandlerImp.hpp
+	"CommMsgMoudle.hpp"
+
+1517817791 /home/ljh/Desktop/MSServer-git/tcpMoudle/masterServer/MasterServer/CommMsgMoudle.hpp
+	"MoudleImp.hpp"
+	"EventImp.hpp"
+
+1517817703 /home/ljh/Desktop/MSServer-git/tcpMoudle/masterServer/MasterServer/MoudleImp.hpp
+	"ImpHeader.h"
+
+1517643569 /home/ljh/Desktop/MSServer-git/tcpMoudle/masterServer/MasterServer/ImpHeader.h
+	<string>
+	<iostream>
+	<sstream>
+	<netinet/in.h>
+	<netinet/tcp.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<stdio.h>
+	<unistd.h>
+	<stdlib.h>
+	<errno.h>
+	<vector>
+	<cstring>
+	<arpa/inet.h>
+	<pthread.h>
+	<event.h>
+	<event2/util.h>
+	<event2/event.h>
+	<event2/thread.h>
+	<google/protobuf/message.h>
+	<malloc.h>
+
+1517816819 /home/ljh/Desktop/MSServer-git/tcpMoudle/masterServer/MasterServer/EventImp.hpp
+	"ImpHeader.h"
+

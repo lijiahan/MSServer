@@ -1,0 +1,7 @@
+syntax = "proto2";
+message ClientBInfo
+{
+	  required uint32 uid = 1;
+	  repeated int32 module = 2; 
+	  optional string name = 3;
+}

@@ -2,7 +2,7 @@
 #define MESSAGEDISPOSER_HPP_INCLUDED
 
 #include "ConnImplSt.hpp"
-
+#include "../proto/ProtoMsgHeader.h"
 
 class LgServerMsgDisposer : public MessageDisposer
 {
@@ -40,7 +40,7 @@ class LgServerMsgDisposer : public MessageDisposer
 
                     llen = tlen;
 
-                    handlerModule(glMsg->msgMoudleType, msgbuf, conn);
+                    handlerModule(glMsg->moudleInd, msgbuf, conn);
 
                     if( llen <= MsgMgr::InterComMsgLen )
                     {
@@ -100,7 +100,7 @@ class LgServerMsgDisposer : public MessageDisposer
         virtual void handleLogicMsg( int msgType, char * msgBuf, ConnCtx * conn )
         {
             InterComMsg * inMsg = (InterComMsg *) msgBuf;
-            switch( inMsg->handleType )
+            switch( inMsg->cmdInd )
             {
                 case ResGWConnectMS:
                     {
@@ -258,7 +258,7 @@ class CliH5ServerMsgDisposer : public MessageDisposer
                     {
                         ClientToGateMsg * cgMsg = (ClientToGateMsg *) msgBuf;
 
-                        int blockId = cgMsg->logicBlockId;
+                        int blockId = cgMsg->moudleInd;
                         ClientCnCtx * clientCtx = (ClientCnCtx *) (conn->cnCtx);
 
                         int serverInd = 0;
@@ -310,11 +310,11 @@ class CliH5ServerMsgDisposer : public MessageDisposer
         {
             ClientToGateMsg * cgMsg = (ClientToGateMsg *) msgBuf;
 
-            switch(cgMsg->handlerState)
+            switch(cgMsg->cmdInd)
             {
                 case ReqCliConnectGw:
                     {
-                        ConnectMsg::ClientConnect conMsg;
+                        ClientConnect conMsg;
                         conMsg.ParseFromArray(cgMsg->data,cgMsg->msgLen);
                         CLIENTIDTYPE uId = conMsg.uid();
                         int fd = conn->fd;
@@ -324,7 +324,7 @@ class CliH5ServerMsgDisposer : public MessageDisposer
                         clientMoudle->addClient(conn, uId);
 
                         //
-                        ConnectMsg::ClientConnect resM;
+                        ClientConnect resM;
                         resM.set_uid(uId);
 
                         //
@@ -415,7 +415,7 @@ class CliServerMsgDisposer : public MessageDisposer
                     {
                         ClientToGateMsg * cgMsg = (ClientToGateMsg *) msgBuf;
 
-                        int blockId = cgMsg->logicBlockId;
+                        int blockId = cgMsg->moudleInd;
                         ClientCnCtx * clientCtx = (ClientCnCtx *) (conn->cnCtx);
 
                         int serverInd = 0;
@@ -444,7 +444,7 @@ class CliServerMsgDisposer : public MessageDisposer
                         }
 
                         MsgMgr::buildInterComMsg(bufCtx, LogicMouldeType,
-                                                cgMsg->handlerState, conn->index, cgMsg->logicBlockId,
+                                                cgMsg->cmdInd, conn->index, cgMsg->moudleInd,
                                                 clientCtx->clientId, wlen, cgMsg->data, cgMsg->msgLen);
 
                         printf("ClientLogicMsgType send num %d blockid %d uID %d!!\n", bufCtx->bufLen,blockId,clientCtx->clientId);
@@ -466,7 +466,7 @@ class CliServerMsgDisposer : public MessageDisposer
         {
             ClientToGateMsg * cgMsg = (ClientToGateMsg *) msgBuf;
 
-            switch(cgMsg->handlerState)
+            switch(cgMsg->cmdInd)
             {
                 case ReqCliConnectGw:
                     {
@@ -485,7 +485,7 @@ class CliServerMsgDisposer : public MessageDisposer
 
         void cliConnectGateWay(ClientToGateMsg * cgMsg, ConnCtx * conn)
         {
-            ConnectMsg::ClientConnect conMsg;
+            ClientConnect conMsg;
             conMsg.ParseFromArray(cgMsg->data,cgMsg->msgLen);
             CLIENTIDTYPE uId = conMsg.uid();
             int fd = conn->fd;
@@ -495,7 +495,7 @@ class CliServerMsgDisposer : public MessageDisposer
             ein->addClient(conn, uId);
 
             //
-            ConnectMsg::ClientConnect resM;
+            ClientConnect resM;
             resM.set_uid(uId);
 
             //

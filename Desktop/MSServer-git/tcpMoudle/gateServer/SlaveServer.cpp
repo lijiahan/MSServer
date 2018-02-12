@@ -61,9 +61,9 @@ void SlaveServer::initialServer( std::string masterLgIp, int masterLgPort )
     //
     int wlen = MsgMgr::GateWayConnectMSTLen + MsgMgr::InterComMsgLen;
     //
-    InterComMsg * msg = (InterComMsg *) (msgBuf);;
-    msg->msgMoudleType = MainInitMouldeType;
-    msg->handleType = ReqGWConnectMS;
+    InterComMsg * msg = (InterComMsg *) (msgBuf);
+    msg->moudleInd = MainInitMouldeType;
+    msg->cmdInd = ReqGWConnectMS;
     msg->msgLen = wlen;
     //
     GateWayConnectMST * msgSt = (GateWayConnectMST *) (msg->data);
@@ -356,7 +356,7 @@ void SlaveServer::initConnByMsg(int handlerState, void * msg, ConnCtx * conn, vo
         case ReqGWConnectSS:
         {
             InterComMsg * inMsg = (InterComMsg *) msg;
-            inMsg->msgMoudleType = GateWayMsgType;
+            inMsg->moudleInd = GateWayMsgType;
             //
             SlaveSvrConnectMST * msgSt = (SlaveSvrConnectMST *) (inMsg->data);
             printf("**ReqGWConnectSS serverInd : %d serverId: %d \n", msgSt->logicSvrIndex, msgSt->serverId);

@@ -27,7 +27,7 @@ MasterServer::~MasterServer()
 void MasterServer::initServer(std::string mIp, int mPort)
 {
     //
-    std::string lserveIp = "192.168.75.128";
+    std::string lserveIp = "10.0.6.217";
     int lservePort = 8888;
 
     //

@@ -62,12 +62,10 @@ enum ClientGateWayHandlerType
 
 struct InterComMsg
 {
-    int msgMoudleType;
-    int logicMoudleId;
+    int moudleInd;
+    int cmdInd;
     int connIndex;
     CLIENTIDTYPE uId;
-    int handleType;
-    int handlerInd;
     int msgLen;
     char data[];
 };
@@ -75,9 +73,9 @@ struct InterComMsg
 struct ClientToGateMsg
 {
     int msgType;
-    int logicBlockId;
+    int moudleInd;
     char codeKey[4];
-    int handlerState;
+    int cmdInd;
     int msgLen;
     char data[];
 };
@@ -113,10 +111,8 @@ class MsgMgr
         {
             InterComMsg * tmsg = (InterComMsg *) (bufCtx->buf+bufCtx->bufLen);
 
-            tmsg->msgMoudleType = SendMsg->msgMoudleType;
-            tmsg->logicMoudleId = SendMsg->logicMoudleId;
-            tmsg->handleType = SendMsg->handleType;
-            tmsg->handlerInd = SendMsg->handlerInd;
+            tmsg->moudleInd = SendMsg->moudleInd;
+            tmsg->cmdInd = SendMsg->cmdInd;
             tmsg->connIndex = SendMsg->connIndex;
             tmsg->uId = SendMsg->uId;
             tmsg->msgLen = SendMsg->msgLen;
@@ -130,10 +126,8 @@ class MsgMgr
         {
             InterComMsg * msg = (InterComMsg *) (bufCtx->buf+bufCtx->bufLen);
 
-            msg->msgMoudleType = head.msgMoudleType;
-            msg->logicMoudleId = head.logicMoudleId;
-            msg->handleType = head.handleType;
-            msg->handlerInd = head.handlerInd;
+            msg->moudleInd = head.moudleInd;
+            msg->cmdInd = head.cmdInd;
             msg->connIndex = head.connIndex;
             msg->uId = head.uId;
 
@@ -149,8 +143,8 @@ class MsgMgr
             ClientToGateMsg * msg = (ClientToGateMsg *) (bufCtx->buf+bufCtx->bufLen);
 
             msg->msgType = head.msgType;
-            msg->logicBlockId = head.logicBlockId;
-            msg->handlerState = head.handlerState;
+            msg->moudleInd = head.moudleInd;
+            msg->cmdInd = head.cmdInd;
 
             msg->msgLen = len;
             memcpy(msg->data, data, len);
@@ -163,8 +157,8 @@ class MsgMgr
             ClientToGateMsg * msg = (ClientToGateMsg *) (bufCtx->buf+bufCtx->bufLen);
 
             msg->msgType = mtype;
-            msg->logicBlockId = blockId;
-            msg->handlerState = hsate;
+            msg->moudleInd = blockId;
+            msg->cmdInd = hsate;
 
             int len = proto->ByteSize();
             msg->msgLen = len;
@@ -179,10 +173,9 @@ class MsgMgr
 
             msg->connIndex = head.connIndex;
             msg->uId = head.uId;
-            msg->msgMoudleType = head.msgMoudleType;
-            msg->handleType = head.handleType;
+            msg->moudleInd = head.moudleInd;
 
-            msg->logicMoudleId = cgMsg->logicBlockId;
+            msg->cmdInd = cgMsg->cmdInd;
             msg->msgLen = cgMsg->msgLen;
 
             memcpy(msg->data, cgMsg->data, cgMsg->msgLen);
@@ -194,9 +187,8 @@ class MsgMgr
         {
             ClientToGateMsg * msg = (ClientToGateMsg *) (bufCtx->buf+bufCtx->bufLen);
 
-            msg->msgType = glMsg->msgMoudleType;
-            msg->logicBlockId = glMsg->logicMoudleId;
-            msg->handlerState = glMsg->handleType;
+            msg->msgType = 0;
+            msg->cmdInd = glMsg->cmdInd;
             msg->msgLen = glMsg->msgLen;
 
             memcpy(msg->data, glMsg->data, glMsg->msgLen);
@@ -214,10 +206,9 @@ class MsgMgr
         static InterComMsg * buildInterComMsg(BufCtx * bufCtx, int mtype, int htype, int ind, int mid, int uid, int mlen, char * data, int dlen)
         {
             InterComMsg * msg = (InterComMsg *) (bufCtx->buf+bufCtx->bufLen);
-            msg->msgMoudleType = mtype;
-            msg->handleType = htype;
+            msg->moudleInd = mtype;
             msg->connIndex = ind;
-            msg->logicMoudleId = mid;
+            msg->cmdInd = mid;
             msg->uId = uid;
             msg->msgLen = dlen;
             if(dlen > 0)
